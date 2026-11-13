@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 from unittest.mock import MagicMock, patch
-from ml_project.utils.device import get_array_module, to_numpy
-from ml_project.models.base import BaseClassifier
+from ensemble_learning.utils.device import get_array_module, to_numpy
+from ensemble_learning.models.base import BaseClassifier
 
 
 def test_device_fallback_cpu():
@@ -40,8 +40,8 @@ def test_device_mock_cupy_success():
     mock_cupy.cuda.runtime.getDeviceCount.return_value = 1
 
     with patch.dict("sys.modules", {"cupy": mock_cupy}):
-        with patch("ml_project.utils.device._check_cupy_available", return_value=True):
-            with patch("ml_project.utils.device._get_cupy_module", return_value=mock_cupy):
+        with patch("ensemble_learning.utils.device._check_cupy_available", return_value=True):
+            with patch("ensemble_learning.utils.device._get_cupy_module", return_value=mock_cupy):
                 xp, dev_name = get_array_module(device="cuda")
                 assert dev_name == "cuda"
                 assert xp == mock_cupy

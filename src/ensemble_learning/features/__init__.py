@@ -1,6 +1,6 @@
 """Feature engineering and formatting subpackage."""
 
-from ml_project.features.build_features import (
+from ensemble_learning.features.build_features import (
     extract_features_and_target,
     standardize_features,
 )

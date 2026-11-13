@@ -1,1 +1,1 @@
-"""Test suite for ml_project."""
+"""Test suite for ensemble_learning."""

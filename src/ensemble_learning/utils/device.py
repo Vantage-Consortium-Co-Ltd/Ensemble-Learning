@@ -82,7 +82,7 @@ def to_numpy(arr: Any) -> np.ndarray:
         return arr
 
     # CuPy ndarray implements .get() to transfer device array to host NumPy array
-    if hasattr(arr, "get") and callable(arr.get):
+    if not isinstance(arr, dict) and hasattr(arr, "get") and callable(arr.get):
         try:
             return np.asarray(arr.get())
         except Exception:

@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 import pytest
-from ml_project.data.make_dataset import load_iris_data, split_train_test
-from ml_project.features.build_features import extract_features_and_target, standardize_features
+from ensemble_learning.data.make_dataset import load_iris_data, split_train_test
+from ensemble_learning.features.build_features import extract_features_and_target, standardize_features
 
 
 def test_load_iris_data_schema(tmp_path):

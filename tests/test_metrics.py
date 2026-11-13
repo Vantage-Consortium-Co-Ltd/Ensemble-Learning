@@ -1,7 +1,7 @@
 import time
 import numpy as np
 import pytest
-from ml_project.utils.metrics import compute_classification_metrics, Timer
+from ensemble_learning.utils.metrics import compute_classification_metrics, Timer
 
 
 def test_compute_classification_metrics_multiclass():

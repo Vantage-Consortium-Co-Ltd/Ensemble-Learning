@@ -6,7 +6,7 @@ from typing import Any, Dict, Optional
 import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
-from ml_project.utils.device import to_numpy
+from ensemble_learning.utils.device import to_numpy
 
 
 def compute_classification_metrics(y_true: Any, y_pred: Any) -> Dict[str, float]:

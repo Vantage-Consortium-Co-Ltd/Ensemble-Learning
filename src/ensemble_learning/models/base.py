@@ -57,6 +57,6 @@ class BaseClassifier(ABC):
         score : float
             Mean accuracy of self.predict(X) wrt. y.
         """
-        preds = self.predict(X)
-        y_arr = np.asarray(y)
+        preds = np.asarray(self.predict(X)).ravel()
+        y_arr = np.asarray(y).ravel()
         return float(np.mean(preds == y_arr))

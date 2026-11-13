@@ -3,7 +3,7 @@ import sys
 
 
 def setup_logger(
-    name: str = "ml_project",
+    name: str = "ensemble_learning",
     level: int = logging.INFO,
     format_str: str = "[%(asctime)s] [%(levelname)s] [%(name)s]: %(message)s",
     datefmt: str = "%Y-%m-%d %H:%M:%S",
@@ -13,7 +13,7 @@ def setup_logger(
     Parameters
     ----------
     name : str, optional
-        Logger name, by default "ml_project".
+        Logger name, by default "ensemble_learning".
     level : int, optional
         Logging level, by default logging.INFO.
     format_str : str, optional

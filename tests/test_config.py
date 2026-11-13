@@ -2,8 +2,8 @@ import logging
 from pathlib import Path
 import pytest
 
-from ml_project.utils.config import load_yaml_config
-from ml_project.utils.logger import setup_logger
+from ensemble_learning.utils.config import load_yaml_config
+from ensemble_learning.utils.logger import setup_logger
 
 
 def test_load_train_config():
