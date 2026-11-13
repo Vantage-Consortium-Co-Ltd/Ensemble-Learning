@@ -1,5 +1,5 @@
 """Bagging and AdaBoost implemented with NumPy only (base classifiers from scikit-learn)."""
 from .bagging import Bagging
-from .boosting import AdaBoost
+from .boosting import AdaBoost, GradientBoosting
 
-__all__ = ["Bagging", "AdaBoost"]
+__all__ = ["Bagging", "AdaBoost", "GradientBoosting"]
