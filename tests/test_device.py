@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 from unittest.mock import MagicMock, patch
-from ensemble_learning.utils.device import get_array_module, to_numpy
+from ensemble_learning.utils.device import get_array_module, get_device_info, to_numpy
 from ensemble_learning.models.base import BaseClassifier
 
 
@@ -107,3 +107,13 @@ def test_base_classifier_concrete_subclass():
     # Score: 3 matches out of 4 -> 0.75
     acc = clf.score(X, y)
     assert np.isclose(acc, 0.75)
+
+
+def test_get_device_info_structure():
+    info = get_device_info(device="cpu")
+    assert isinstance(info, dict)
+    assert info["device_name"] == "cpu"
+    assert info["backend_module"] == "numpy"
+    assert "cuda_available" in info
+    assert "device_count" in info
+

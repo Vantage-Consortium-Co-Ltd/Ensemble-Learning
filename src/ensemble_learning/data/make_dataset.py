@@ -104,6 +104,7 @@ def load_iris_data(
 def split_train_test(
     df: pd.DataFrame,
     train_ratio: float = 0.8,
+    test_ratio: Optional[float] = None,
     random_state: int = 42,
     processed_dir: Optional[Union[str, Path]] = "data/processed",
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
@@ -115,6 +116,8 @@ def split_train_test(
         Input DataFrame containing feature columns and 'target'.
     train_ratio : float, default=0.8
         Proportion of samples per class assigned to training set.
+    test_ratio : Optional[float], default=None
+        Optional test proportion. If specified, overrides train_ratio to (1.0 - test_ratio).
     random_state : int, default=42
         Seed for reproducibility of stratified permutations.
     processed_dir : Optional[Union[str, Path]], default="data/processed"
@@ -130,6 +133,9 @@ def split_train_test(
         - y_train: np.ndarray of shape (n_train,), int64
         - y_test: np.ndarray of shape (n_test,), int64
     """
+    if test_ratio is not None:
+        train_ratio = 1.0 - float(test_ratio)
+
     feature_cols = [c for c in df.columns if c != TARGET_COLUMN]
     targets = df[TARGET_COLUMN].to_numpy()
     unique_classes = np.unique(targets)
@@ -204,3 +210,8 @@ def load_dataset_from_config(
         random_state=random_state,
         processed_dir=processed_dir,
     )
+
+
+# Alias for backwards and notebook compatibility
+split_dataset = split_train_test
+

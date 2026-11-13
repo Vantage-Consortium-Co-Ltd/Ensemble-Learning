@@ -65,6 +65,40 @@ def get_array_module(device: str = "auto") -> Tuple[ModuleType, str]:
     raise ValueError(f"Unsupported device: {device}. Supported options are 'auto', 'cuda', 'cpu'.")
 
 
+def get_device_info(device: str = "auto") -> dict[str, Any]:
+    """Inspect and return information about current compute hardware and array backend.
+
+    Parameters
+    ----------
+    device : str, default="auto"
+        Target device: "auto", "cuda", or "cpu".
+
+    Returns
+    -------
+    dict[str, Any]
+        Dictionary with keys:
+        - "device_name": str ("cpu" or "cuda")
+        - "backend_module": str ("numpy" or "cupy")
+        - "cuda_available": bool
+        - "device_count": int
+    """
+    cuda_available = _check_cupy_available()
+    xp, dev = get_array_module(device)
+    count = 0
+    if cuda_available:
+        try:
+            cp = _get_cupy_module()
+            count = cp.cuda.runtime.getDeviceCount()
+        except Exception:
+            count = 1
+    return {
+        "device_name": dev,
+        "backend_module": getattr(xp, "__name__", "numpy"),
+        "cuda_available": cuda_available,
+        "device_count": count,
+    }
+
+
 def to_numpy(arr: Any) -> np.ndarray:
     """Convert an array-like object (NumPy, CuPy, Pandas, or Python list) to a NumPy ndarray.
 
