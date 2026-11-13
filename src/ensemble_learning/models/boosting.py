@@ -73,7 +73,7 @@ class AdaBoostClassifier(BaseClassifier):
             The fitted classifier.
         """
         X_arr = np.asarray(X)
-        y_arr = np.asarray(y)
+        y_arr = np.asarray(y).ravel()
 
         n_samples = X_arr.shape[0]
         if n_samples == 0 or y_arr.shape[0] == 0:
