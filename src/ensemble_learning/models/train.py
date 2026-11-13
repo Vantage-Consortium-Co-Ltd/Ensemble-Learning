@@ -2,7 +2,7 @@
 
 import argparse
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 import joblib
 import numpy as np
@@ -292,7 +292,7 @@ def main() -> None:
     parser.add_argument(
         "--save",
         type=str,
-        default="models/bagging_iris.pkl",
+        default=None,
         help="Output path for the serialized model artifact (.pkl)",
     )
     parser.add_argument(
@@ -311,14 +311,15 @@ def main() -> None:
             config_path=args.config,
         )
     else:
+        save_path = args.save if args.save is not None else f"models/{args.model}_iris.pkl"
         print(f"Training {args.model} with n_estimators={args.n_estimators}...")
         train_and_save_model(
             model_type=args.model,
             n_estimators=args.n_estimators,
-            save_path=args.save,
+            save_path=save_path,
             config_path=args.config,
         )
-        print(f"Model saved to {args.save}")
+        print(f"Model saved to {save_path}")
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@
 
 import argparse
 from pathlib import Path
-from typing import List, Sequence, Union
+from typing import Sequence, Union
 
 import joblib
 import numpy as np
