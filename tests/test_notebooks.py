@@ -41,6 +41,6 @@ def test_colab_runner_contains_colab_badge_and_cells():
     assert "nvidia-smi" in full_text
     assert "antoniopelusi/iris" in full_text
     assert "BaggingClassifier" in full_text
-    assert "AdaBoostClassifier" in full_text
+    assert "BoostingClassifier" in full_text
     assert "run_benchmark" in full_text
     assert "load_and_predict" in full_text

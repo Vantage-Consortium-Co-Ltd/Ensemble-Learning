@@ -10,7 +10,7 @@ import numpy as np
 from ensemble_learning.data.make_dataset import load_dataset_from_config
 from ensemble_learning.models.bagging import BaggingClassifier
 from ensemble_learning.models.base import BaseClassifier
-from ensemble_learning.models.boosting import AdaBoostClassifier
+from ensemble_learning.models.boosting import AdaBoostClassifier, BoostingClassifier
 from ensemble_learning.utils.config import load_yaml_config
 from ensemble_learning.utils.logger import setup_logger
 from ensemble_learning.utils.metrics import Timer, compute_classification_metrics
@@ -98,7 +98,7 @@ def train_and_save_model(
     Parameters
     ----------
     model_type : str, default="bagging"
-        Type of model to train. Supported options: "bagging", "boosting", "adaboost".
+        Type of model to train. Supported options: "bagging", "boosting".
     n_estimators : int, default=50
         Number of estimators for the ensemble.
     save_path : str, default="models/bagging_iris.pkl"
@@ -117,9 +117,12 @@ def train_and_save_model(
         If model_type is unsupported.
     """
     model_type_norm = model_type.strip().lower()
-    if model_type_norm not in ("bagging", "boosting", "adaboost"):
+    if model_type_norm == "adaboost":
+        model_type_norm = "boosting"
+
+    if model_type_norm not in ("bagging", "boosting"):
         raise ValueError(
-            f"Unsupported model_type: '{model_type}'. Expected 'bagging' or 'boosting'/'adaboost'."
+            f"Unsupported model_type: '{model_type}'. Expected 'bagging' or 'boosting'."
         )
 
     # 1. Load data
@@ -145,7 +148,7 @@ def train_and_save_model(
             random_state=random_state,
         )
     else:
-        model = AdaBoostClassifier(
+        model = BoostingClassifier(
             n_estimators=n_estimators,
             random_state=random_state,
         )
@@ -223,7 +226,7 @@ def run_benchmark(
     for n_est in n_estimators_list:
         models_to_test = [
             ("Bagging", BaggingClassifier(n_estimators=n_est, n_jobs=n_jobs, random_state=random_state)),
-            ("Boosting", AdaBoostClassifier(n_estimators=n_est, random_state=random_state)),
+            ("Boosting", BoostingClassifier(n_estimators=n_est, random_state=random_state)),
         ]
 
         for model_name, model in models_to_test:
@@ -280,7 +283,7 @@ def main() -> None:
         "--model",
         type=str,
         default="bagging",
-        choices=["bagging", "boosting", "adaboost"],
+        choices=["bagging", "boosting"],
         help="Model architecture to train ('bagging' or 'boosting')",
     )
     parser.add_argument(

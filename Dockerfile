@@ -1,4 +1,4 @@
-# Week 8 - Ensemble Learning: Pure NumPy Bagging and AdaBoost (SAMME)
+# Week 8 - Ensemble Learning: Pure NumPy Bagging and Boosting (SAMME)
 FROM python:3.12-slim
 
 # Prevent Python from writing .pyc files and enable unbuffered logging

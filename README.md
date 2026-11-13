@@ -1,11 +1,11 @@
-# Week 8 - Ensemble Learning: Pure NumPy Bagging and AdaBoost (SAMME)
+# Week 8 - Ensemble Learning: Pure NumPy Bagging and Boosting (SAMME)
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Vantage-Consortium-Co-Ltd/Ensemble-Learning/blob/phuriphat/notebooks/week8_colab_runner.ipynb)
-[![CI Tests](https://img.shields.io/badge/tests-54%20passed-brightgreen.svg)](#testing)
+[![CI Tests](https://img.shields.io/badge/tests-55%20passed-brightgreen.svg)](#testing)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-An enterprise-grade, pure NumPy & CuPy implementation of fundamental **Ensemble Learning** algorithms applied to the multi-class **Iris dataset** (`antoniopelusi/iris` on Hugging Face). Implements **Bagging** with multi-core parallel process execution and **AdaBoost (SAMME)** multi-class boosting, complete with benchmarking suites, CLI utilities, interactive Jupyter notebooks, and Docker containerization.
+An enterprise-grade, pure NumPy & CuPy implementation of fundamental **Ensemble Learning** algorithms applied to the multi-class **Iris dataset** (`antoniopelusi/iris` on Hugging Face). Implements **Bagging** with multi-core parallel process execution and **Boosting (SAMME)** multi-class boosting, complete with benchmarking suites, CLI utilities, interactive Jupyter notebooks, and Docker containerization.
 
 ---
 
@@ -49,7 +49,7 @@ Week8/
 │       │   ├── __init__.py
 │       │   ├── base.py               # Abstract BaseClassifier interface
 │       │   ├── bagging.py            # Pure NumPy BaggingClassifier with ProcessPoolExecutor
-│       │   ├── boosting.py           # Pure NumPy AdaBoostClassifier (SAMME multi-class)
+│       │   ├── boosting.py           # Pure NumPy BoostingClassifier (SAMME multi-class)
 │       │   ├── train.py              # CLI trainer, matrix benchmarking & serialization
 │       │   └── predict.py            # CLI inference runner
 │       └── utils/
@@ -58,7 +58,7 @@ Week8/
 │           ├── device.py             # NumPy / CuPy (CUDA A100) auto device detection
 │           ├── logger.py             # Structured logging utility
 │           └── metrics.py            # Accuracy, Macro-F1, Precision, Recall & Timer
-├── tests/                            # 54 passing unit & integration tests
+├── tests/                            # 55 passing unit & integration tests
 │   ├── test_bagging.py
 │   ├── test_boosting.py
 │   ├── test_config.py
@@ -78,7 +78,7 @@ Week8/
 
 ## 🔬 Theoretical Comparison: Bagging vs. Boosting
 
-| Dimension | Bagging (Bootstrap Aggregation) | Boosting (AdaBoost SAMME) |
+| Dimension | Bagging (Bootstrap Aggregation) | Boosting (SAMME) |
 | :--- | :--- | :--- |
 | **Primary Goal** | **Variance Reduction** (Stabilize unstable learners) | **Bias Reduction** (Build strong learners from weak ones) |
 | **Base Estimator** | Complex, deep Decision Trees (Low bias, high variance) | Shallow Decision Stumps (`max_depth=1`, High bias, low variance) |
@@ -90,7 +90,7 @@ Week8/
 | **Overfitting Risk** | Low; test error flattens as $N \to \infty$ | Moderate if $N$ is excessively large without regularization |
 
 ### Multi-Class SAMME Formulation
-For $K$ classes, standard AdaBoost requires base classifiers to achieve $>50\%$ accuracy, which is too stringent for $K \ge 3$. The **SAMME** algorithm generalizes AdaBoost by modifying the estimator weight update:
+For $K$ classes, standard two-class boosting requires base classifiers to achieve $>50\%$ accuracy, which is too stringent for $K \ge 3$. The **SAMME** algorithm generalizes multi-class boosting by modifying the estimator weight update:
 
 $$\alpha_m = \log \left( \frac{1 - \text{err}_m}{\text{err}_m} \right) + \log(K - 1)$$
 
@@ -108,14 +108,14 @@ Evaluated on the 80/20 stratified Iris split (120 train samples, 30 test samples
 
 | Model | Estimators ($N$) | Fit Time (s) | Inference Time (s) | Test Accuracy | Macro F1 | Macro Precision | Macro Recall |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **AdaBoost (SAMME)** | 10 | **0.0166 s** | 0.0012 s | 0.9333 | 0.9333 | 0.9333 | 0.9333 |
-| **AdaBoost (SAMME)** | 50 | 0.0769 s | 0.0085 s | 0.9333 | 0.9333 | 0.9333 | 0.9333 |
-| **AdaBoost (SAMME)** | 100 | 0.1859 s | 0.0161 s | 0.9333 | 0.9333 | 0.9333 | 0.9333 |
+| **Boosting (SAMME)** | 10 | **0.0166 s** | 0.0012 s | 0.9333 | 0.9333 | 0.9333 | 0.9333 |
+| **Boosting (SAMME)** | 50 | 0.0769 s | 0.0085 s | 0.9333 | 0.9333 | 0.9333 | 0.9333 |
+| **Boosting (SAMME)** | 100 | 0.1859 s | 0.0161 s | 0.9333 | 0.9333 | 0.9333 | 0.9333 |
 | **Bagging** | 10 | 5.3033 s | 0.0197 s | **0.9667** | **0.9666** | **0.9697** | **0.9667** |
 | **Bagging** | 50 | 3.7708 s | 0.0075 s | **0.9667** | **0.9666** | **0.9697** | **0.9667** |
 | **Bagging** | 100 | 3.8671 s | 0.0176 s | **0.9667** | **0.9666** | **0.9697** | **0.9667** |
 
-> **Key Takeaway**: AdaBoost with Decision Stumps trains virtually instantaneously (<0.08 s for $N=50$), attaining 93.3% accuracy. Bagging with parallel Decision Trees achieves 96.67% accuracy by successfully smoothing decision boundaries across overlapping species (Versicolor vs. Virginica).
+> **Key Takeaway**: Boosting with Decision Stumps trains virtually instantaneously (<0.08 s for $N=50$), attaining 93.3% accuracy. Bagging with parallel Decision Trees achieves 96.67% accuracy by successfully smoothing decision boundaries across overlapping species (Versicolor vs. Virginica).
 
 ---
 
@@ -178,9 +178,9 @@ Train a Bagging model ($N=50$ estimators) and save artifact:
 python -m ensemble_learning.models.train --model bagging --n-estimators 50 --save models/bagging_iris.pkl
 ```
 
-Train an AdaBoost (SAMME) model ($N=50$ estimators) and save artifact:
+Train a Boosting (SAMME) model ($N=50$ estimators) and save artifact:
 ```bash
-python -m ensemble_learning.models.train --model boosting --n-estimators 50 --save models/adaboost_iris.pkl
+python -m ensemble_learning.models.train --model boosting --n-estimators 50 --save models/boosting_iris.pkl
 ```
 
 ### 3. Real-Time Inference CLI
@@ -221,18 +221,18 @@ docker run --rm ensemble-learning:latest python -m ensemble_learning.models.trai
 ```bash
 # Train and save model into host models directory
 docker run --rm -v "${PWD}/models:/app/models" ensemble-learning:latest \
-    python -m ensemble_learning.models.train --model boosting --n-estimators 50 --save models/adaboost_iris.pkl
+    python -m ensemble_learning.models.train --model boosting --n-estimators 50 --save models/boosting_iris.pkl
 
 # Run inference
 docker run --rm -v "${PWD}/models:/app/models" ensemble-learning:latest \
-    python -m ensemble_learning.models.predict --model-path models/adaboost_iris.pkl --features 6.7 3.0 5.2 2.3
+    python -m ensemble_learning.models.predict --model-path models/boosting_iris.pkl --features 6.7 3.0 5.2 2.3
 ```
 
 ---
 
 ## 🧪 Testing & Quality Assurance
 
-The codebase contains unit and integration tests covering data loading, feature transformation, Bagging parallelism, AdaBoost SAMME reweighting, CLI execution, and notebook schema validity.
+The codebase contains unit and integration tests covering data loading, feature transformation, Bagging parallelism, Boosting SAMME reweighting, CLI execution, and notebook schema validity.
 
 Run full test suite:
 ```bash

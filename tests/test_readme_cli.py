@@ -25,8 +25,8 @@ def test_readme_train_bagging_cli(tmp_path):
 
 
 def test_readme_train_boosting_cli(tmp_path):
-    """Test standard AdaBoost training CLI command documented in README."""
-    save_path = tmp_path / "adaboost_iris.pkl"
+    """Test standard Boosting training CLI command documented in README."""
+    save_path = tmp_path / "boosting_iris.pkl"
     cmd = [
         sys.executable,
         "-m",

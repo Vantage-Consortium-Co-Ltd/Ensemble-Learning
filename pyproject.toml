@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ensemble-learning"
 version = "0.1.0"
-description = "Week 8 Ensemble Learning: Custom NumPy Bagging and AdaBoost SAMME"
+description = "Week 8 Ensemble Learning: Custom NumPy Bagging and Boosting (SAMME)"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [

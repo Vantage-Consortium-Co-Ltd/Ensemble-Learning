@@ -4,11 +4,15 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 
-from ensemble_learning.models.boosting import AdaBoostClassifier
+from ensemble_learning.models.boosting import AdaBoostClassifier, BoostingClassifier
+
+
+def test_boosting_alias():
+    assert AdaBoostClassifier is BoostingClassifier
 
 
 def test_boosting_initialization_and_weights():
-    clf = AdaBoostClassifier(n_estimators=5, random_state=42)
+    clf = BoostingClassifier(n_estimators=5, random_state=42)
     X = np.random.randn(30, 4)
     y = np.random.choice([0, 1, 2], size=30)
     clf.fit(X, y)
@@ -29,7 +33,7 @@ def test_boosting_perfect_weak_learner_early_stop():
 
     X = np.random.randn(20, 2)
     y = np.zeros(20, dtype=int)
-    clf = AdaBoostClassifier(base_estimator=PerfectLearner(), n_estimators=10)
+    clf = BoostingClassifier(base_estimator=PerfectLearner(), n_estimators=10)
     clf.fit(X, y)
     # Must terminate early cleanly without ZeroDivisionError
     assert len(clf.estimators_) == 1
@@ -38,7 +42,7 @@ def test_boosting_perfect_weak_learner_early_stop():
 
 
 def test_boosting_single_sample_inference():
-    clf = AdaBoostClassifier(n_estimators=10, random_state=42)
+    clf = BoostingClassifier(n_estimators=10, random_state=42)
     X = np.random.randn(30, 4)
     y = np.random.choice([0, 1, 2], size=30)
     clf.fit(X, y)
@@ -54,7 +58,7 @@ def test_boosting_iris_accuracy():
     X_tr, X_te, y_tr, y_te = train_test_split(
         data.data, data.target, test_size=0.2, random_state=42, stratify=data.target
     )
-    clf = AdaBoostClassifier(
+    clf = BoostingClassifier(
         base_estimator=DecisionTreeClassifier(max_depth=1, random_state=42),
         n_estimators=50,
         learning_rate=1.0,
@@ -79,7 +83,7 @@ def test_boosting_worse_than_random_early_stop():
 
     X = np.random.randn(20, 2)
     y = np.zeros(20, dtype=int)
-    clf = AdaBoostClassifier(base_estimator=AlwaysWrongLearner(), n_estimators=10)
+    clf = BoostingClassifier(base_estimator=AlwaysWrongLearner(), n_estimators=10)
     clf.fit(X, y)
     # Stops early on first round
     assert len(clf.estimators_) == 1
@@ -91,7 +95,7 @@ def test_boosting_binary_classification():
     np.random.seed(42)
     X = np.random.randn(50, 4)
     y = (X[:, 0] + X[:, 1] > 0).astype(int)
-    clf = AdaBoostClassifier(n_estimators=20, random_state=42)
+    clf = BoostingClassifier(n_estimators=20, random_state=42)
     clf.fit(X, y)
     preds = clf.predict(X)
     assert preds.shape == (50,)
@@ -99,26 +103,26 @@ def test_boosting_binary_classification():
 
 
 def test_boosting_predict_before_fit():
-    clf = AdaBoostClassifier()
+    clf = BoostingClassifier()
     with pytest.raises(ValueError, match="not fitted"):
         clf.predict(np.array([[1.0, 2.0]]))
 
 
 def test_boosting_empty_input():
-    clf = AdaBoostClassifier()
+    clf = BoostingClassifier()
     with pytest.raises(ValueError, match="cannot be empty"):
         clf.fit(np.empty((0, 2)), np.empty((0,)))
 
 
 def test_boosting_mismatched_xy():
-    clf = AdaBoostClassifier()
+    clf = BoostingClassifier()
     with pytest.raises(ValueError, match="Mismatch"):
         clf.fit(np.zeros((10, 2)), np.zeros(8))
 
 
 def test_boosting_staged_predict():
     data = load_iris()
-    clf = AdaBoostClassifier(n_estimators=10, random_state=42)
+    clf = BoostingClassifier(n_estimators=10, random_state=42)
     clf.fit(data.data, data.target)
     stages = list(clf.staged_predict(data.data[:5]))
     assert len(stages) == len(clf.estimators_)
@@ -128,7 +132,7 @@ def test_boosting_staged_predict():
 
 def test_boosting_predict_proba():
     data = load_iris()
-    clf = AdaBoostClassifier(n_estimators=10, random_state=42)
+    clf = BoostingClassifier(n_estimators=10, random_state=42)
     clf.fit(data.data, data.target)
     proba = clf.predict_proba(data.data[:5])
     assert proba.shape == (5, 3)

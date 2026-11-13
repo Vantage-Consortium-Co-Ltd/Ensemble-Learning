@@ -1,4 +1,4 @@
-"""Pure NumPy Multi-class AdaBoost (SAMME) Classifier."""
+"""Pure NumPy Multi-class Boosting (SAMME) Classifier."""
 
 import copy
 from typing import Any, Generator, List, Optional
@@ -10,8 +10,8 @@ from sklearn.tree import DecisionTreeClassifier
 from ensemble_learning.models.base import BaseClassifier
 
 
-class AdaBoostClassifier(BaseClassifier):
-    """Multi-class AdaBoost classifier implementing SAMME in pure NumPy.
+class BoostingClassifier(BaseClassifier):
+    """Multi-class Boosting classifier implementing SAMME in pure NumPy.
 
     Parameters
     ----------
@@ -57,8 +57,8 @@ class AdaBoostClassifier(BaseClassifier):
         self.classes_: np.ndarray = np.array([])
         self.n_classes_: int = 0
 
-    def fit(self, X: np.ndarray, y: np.ndarray) -> "AdaBoostClassifier":
-        """Fit the AdaBoost SAMME ensemble classifier.
+    def fit(self, X: np.ndarray, y: np.ndarray) -> "BoostingClassifier":
+        """Fit the Boosting SAMME ensemble classifier.
 
         Parameters
         ----------
@@ -69,7 +69,7 @@ class AdaBoostClassifier(BaseClassifier):
 
         Returns
         -------
-        self : AdaBoostClassifier
+        self : BoostingClassifier
             The fitted classifier.
         """
         X_arr = np.asarray(X)
@@ -175,7 +175,7 @@ class AdaBoostClassifier(BaseClassifier):
         """Verify that the ensemble has been fitted."""
         if not hasattr(self, "estimators_") or len(self.estimators_) == 0:
             raise ValueError(
-                "This AdaBoostClassifier instance is not fitted yet. "
+                "This BoostingClassifier instance is not fitted yet. "
                 "Call 'fit' with appropriate arguments before using this estimator."
             )
 
@@ -281,3 +281,8 @@ class AdaBoostClassifier(BaseClassifier):
                 scores[:, k] += alpha * (y_pred == cls_label)
             best_indices = np.argmax(scores, axis=1)
             yield self.classes_[best_indices]
+
+
+# Alias for backward compatibility
+AdaBoostClassifier = BoostingClassifier
+

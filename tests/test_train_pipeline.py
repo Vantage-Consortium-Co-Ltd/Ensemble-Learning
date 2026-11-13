@@ -52,7 +52,7 @@ def test_train_and_save_model_bagging(tmp_path):
 
 
 def test_train_and_save_model_boosting(tmp_path):
-    """Test training and saving an AdaBoost model, then predicting with saved artifact."""
+    """Test training and saving a Boosting model, then predicting with saved artifact."""
     model_path = tmp_path / "test_boosting.pkl"
     model = train_and_save_model(
         model_type="boosting",
@@ -146,4 +146,4 @@ def test_train_cli_sweep():
     ]
     res_sweep = subprocess.run(sweep_cmd, capture_output=True, text=True, check=True)
     assert "Bagging" in res_sweep.stdout
-    assert "Boosting" in res_sweep.stdout or "AdaBoost" in res_sweep.stdout
+    assert "Boosting" in res_sweep.stdout

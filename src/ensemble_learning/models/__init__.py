@@ -4,11 +4,12 @@ from typing import Any
 
 from ensemble_learning.models.bagging import BaggingClassifier
 from ensemble_learning.models.base import BaseClassifier
-from ensemble_learning.models.boosting import AdaBoostClassifier
+from ensemble_learning.models.boosting import AdaBoostClassifier, BoostingClassifier
 
 __all__ = [
     "BaseClassifier",
     "BaggingClassifier",
+    "BoostingClassifier",
     "AdaBoostClassifier",
     "run_benchmark",
     "train_and_save_model",
