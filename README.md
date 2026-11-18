@@ -50,3 +50,11 @@ python visualize.py          # ได้ output/compare.png
 - ใช้ thread แทน process เพราะ scikit-learn ปล่อย GIL ระหว่างเทรนต้นไม้ และบน Windows การเปิด process ใหม่ใช้เวลานาน
 - AdaBoost ส่ง `sample_weight` ให้ต้นไม้โดยตรง ไม่ต้องสุ่มข้อมูลใหม่ตามน้ำหนัก
 - ถ้าต้นไหนทายผิดมากกว่าการเดาสุ่ม (`err >= 1 - 1/K`) จะหยุดเพิ่มต้น
+
+## เทสต์
+
+```bash
+pytest
+```
+
+ใช้ข้อมูลสังเคราะห์ ไม่ต้องโหลด Iris จากเน็ต ตรวจ majority vote, Bagging แบบเรียงกับขนานต้องได้ผลเท่ากัน และ AdaBoost ต้องดีกว่า stump ต้นเดียวและหยุดเองเมื่อทายถูกหมด
