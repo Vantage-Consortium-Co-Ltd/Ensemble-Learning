@@ -1,6 +1,5 @@
 """วาดกราฟเทียบ Bagging กับ Boosting -> output/compare.png
 ต้องรัน bagging.py และ boosting.py ก่อน (แต่ละไฟล์จะเขียน csv ไว้ใน output/)
-
 รัน: python visualize.py
 """
 import os
